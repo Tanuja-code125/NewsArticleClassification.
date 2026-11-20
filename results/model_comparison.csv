@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1 Score,Training Time (seconds)
+Naive Bayes,1.0,1.0,1.0,1.0,5.021252155303955
+Logistic Regression,1.0,1.0,1.0,1.0,2.6769776344299316
+Linear SVM,1.0,1.0,1.0,1.0,6.930313348770142
