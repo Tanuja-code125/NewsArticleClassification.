@@ -5,4 +5,5 @@ __pycache__/
 
 tempCodeRunnerFile.py
 dataset/
+model.pkl
 News_Article_Multiclass_Classification_Presentation.pptx
