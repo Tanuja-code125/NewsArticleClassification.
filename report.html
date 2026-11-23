@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Multiclass News Article Classification - Technical Report</title>
+<style>
+  @page {
+    size: letter;
+    margin: 1.0in;
+  }
+  
+  body {
+    font-family: 'Verdana', Geneva, sans-serif;
+    font-size: 12pt;
+    line-height: 1.25;
+    color: #000000;
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+  }
+
+  .report-container {
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 1.0in;
+    box-sizing: border-box;
+  }
+
+  @media screen {
+    body {
+      background: #F3F4F6;
+    }
+    .report-container {
+      background: #FFFFFF;
+      margin: 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+  }
+
+  h1, h2, h3, .doc-title, .doc-subtitle {
+    font-family: 'Tahoma', Geneva, sans-serif;
+    color: #000000;
+    font-weight: bold;
+  }
+
+  .doc-title {
+    font-size: 16pt;
+    text-align: center;
+    margin: 0 0 6pt 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .doc-subtitle {
+    font-size: 11.5pt;
+    font-weight: normal;
+    text-align: center;
+    margin: 0 0 16pt 0;
+  }
+
+  h1 {
+    font-size: 13.5pt;
+    margin: 14pt 0 4pt 0;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 2pt;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 12pt;
+    margin: 9pt 0 3pt 0;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 6pt 0;
+    text-align: justify;
+  }
+
+  ul {
+    margin: 0 0 6pt 18pt;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 3pt;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0 4pt 0;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #000000;
+    padding: 5pt 7pt;
+    font-size: 10pt;
+    color: #000000;
+  }
+
+  th {
+    font-family: 'Tahoma', sans-serif;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  td.num {
+    text-align: right;
+  }
+
+  td.bold {
+    font-weight: bold;
+  }
+
+  .table-caption {
+    font-family: 'Tahoma', sans-serif;
+    font-size: 9.5pt;
+    font-style: italic;
+    text-align: center;
+    margin: 4pt 0 10pt 0;
+  }
+
+  .formula-box {
+    border: 1px solid #000000;
+    padding: 6pt 10pt;
+    margin: 6pt 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10.5pt;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+</style>
+</head>
+<body>
+
+<div class="report-container">
+
+  <div class="doc-title">Multiclass News Article Classification Using NLP and Machine Learning</div>
+  <div class="doc-subtitle">Applied Machine Learning Technical Report | Multi-Model Comparative Evaluation</div>
+
+  <h1>1. Abstract & Introduction</h1>
+  
+  <h2>1.1 Abstract</h2>
+  <p>
+    Digital journalism generates thousands of news stories daily, demanding rapid and dependable automated article sorting. Manual indexing is expensive, sluggish, and prone to subjective reviewer bias. This report presents an end-to-end Natural Language Processing (NLP) framework designed to categorize news articles into ten major editorial sections. Trained on over 200,000 articles from the HuffPost corpus, the system performs linguistic cleaning, sublinear TF-IDF vectorization with unigrams and bigrams over a 20,000-term vocabulary, and benchmarks five supervised algorithms: Multinomial Naive Bayes, Logistic Regression, Linear Support Vector Classifier (Linear SVC), Radial Basis Function SVM (SVM RBF), and XGBoost. Multinomial Logistic Regression emerged as the champion model, achieving 77.95% accuracy and a 77.62% weighted F1-score, while Linear SVC offered near-identical precision with a 3x reduction in training duration. The pipeline is fully deployed through an interactive Streamlit web dashboard supporting real-time attribution and batch CSV classification.
+  </p>
+
+  <h2>1.2 Introduction & Problem Statement</h2>
+  <p>
+    Automated text classification is vital for modern newsrooms, content recommendation algorithms, and targeted advertising. Categorizing digital journalism entails distinct challenges: headlines are brief and colloquial, full articles frequently cross multiple topical domains (e.g., political legislation impacting financial markets), and journalistic prose exhibits immense lexical diversity. Rather than deploying computationally prohibitive deep learning architectures, this study evaluates the discriminative capacity, training efficiency, and inference latency of foundational machine learning classifiers on high-dimensional sparse representations.
+  </p>
+
+  <h1>2. Dataset Description</h1>
+
+  <h2>2.1 Corpus Provenance & Features</h2>
+  <p>
+    Experiments were conducted on the Kaggle News Classification Dataset, sourced from historical HuffPost archives spanning 2012 to 2022. The raw dataset contains 200,853 publications with four primary columns: 'headline' (news title), 'short_description' (introductory summary or lead), 'authors' (byline, omitted to prevent attribution bias), and 'category' (ground-truth editorial label). The headline and short description were concatenated to form the complete input text.
+  </p>
+
+  <h2>2.2 Category Harmonization & Class Selection</h2>
+  <p>
+    Over ten years of publishing, newsroom taxonomies shifted, producing redundant and overlapping categories. For example, foreign reporting was split between 'WORLDPOST', 'THE WORLDPOST', and 'WORLD NEWS', while health reporting was divided between 'WELLNESS' and 'HEALTHY LIVING'. An automated harmonization map resolved these redundancies by merging synonymous tags: 'THE WORLDPOST' and 'WORLDPOST' were unified into 'WORLD NEWS'; 'WELLNESS' and 'HEALTHY LIVING' into 'HEALTH & WELLNESS'; 'STYLE' into 'STYLE & BEAUTY'; and 'PARENTS' into 'PARENTING'. Following harmonization, the top 10 categories were selected: POLITICS, HEALTH & WELLNESS, ENTERTAINMENT, TRAVEL, STYLE & BEAUTY, PARENTING, QUEER VOICES, FOOD & DRINK, BUSINESS, and WORLD NEWS.
+  </p>
+
+  <h2>2.3 Stratified Train-Test Split</h2>
+  <p>
+    To ensure balanced evaluation, duplicate records and conflicting duplicate texts with multiple labels were pruned. The remaining dataset was divided into an 80% training set and a 20% independent testing set via stratified sampling (random_state = 42). Stratification guarantees identical class proportions across both training and test partitions.
+  </p>
+
+  <h1>3. Methodology</h1>
+
+  <h2>3.1 Text Normalization Pipeline</h2>
+  <p>
+    Raw news text contains formatting artifacts that introduce noise. A deterministic cleaning sequence was applied:
+  </p>
+  <ul>
+    <li><b>Case Folding:</b> Text is converted to lowercase to unify vocabulary tokens.</li>
+    <li><b>Regex Cleansing:</b> Web URLs (http/https/www) and HTML markup (&lt;[^&gt;]+&gt;) are stripped.</li>
+    <li><b>Non-Alpha Filtering:</b> Numbers, punctuation, and special symbols are removed, retaining strictly [a-z] characters.</li>
+    <li><b>Whitespace Compaction:</b> Excess spaces, tabs, and line-breaks are collapsed into a single whitespace.</li>
+  </ul>
+
+  <h2>3.2 TF-IDF Feature Extraction</h2>
+  <p>
+    Normalized text is vectorized using Term Frequency-Inverse Document Frequency (TF-IDF). To prevent high-frequency words from dominating document weights, sublinear term frequency scaling is applied:
+  </p>
+  <div class="formula-box">
+    tf_sublinear(t, d) = 1 + log(tf(t, d))  [for tf > 0]<br>
+    idf(t, D) = log((1 + |D|) / (1 + df(t))) + 1<br>
+    tfidf(t, d, D) = tf_sublinear(t, d) * idf(t, D)
+  </div>
+  <p>
+    The vectorizer extracts both unigrams and bigrams (ngram_range = (1, 2)) to capture critical two-word phrases such as 'wall street', 'white house', and 'climate change'. Standard English stop words are filtered out, the vocabulary is capped at the top 20,000 features, and L2 normalization projects each document vector onto a uniform hypersphere.
+  </p>
+
+  <h2>3.3 Evaluation Metrics</h2>
+  <p>
+    Model performance is assessed across four standardized metrics: Overall Accuracy, Weighted Precision, Weighted Recall, and Weighted F1-Score (the harmonic mean of precision and recall, serving as the benchmark metric). Computational training time and 10x10 confusion matrices are recorded to assess latency and inter-class confusion.
+  </p>
+
+  <h1>4. Machine Learning Models</h1>
+  <p>
+    Five distinct supervised machine learning algorithms were trained and comparatively evaluated:
+  </p>
+  <ul>
+    <li><b>Multinomial Naive Bayes (MNB):</b> A probabilistic classifier modeling class probabilities via Bayes' Rule under the feature independence assumption. Laplace smoothing (alpha = 1.0) handles unseen n-grams.</li>
+    <li><b>Logistic Regression:</b> A multinomial linear model utilizing the softmax function to estimate class posterior probabilities. Optimized via cross-entropy minimization with L2 (Ridge) penalty (C = 1.0) using the L-BFGS solver with up to 2,000 iterations.</li>
+    <li><b>Linear Support Vector Classifier (Linear SVC):</b> Constructs maximum-margin hyperplanes using coordinate descent to optimize squared hinge loss. Highly efficient on sparse text spaces without non-linear kernel overhead.</li>
+    <li><b>Support Vector Machine with RBF Kernel (SVM RBF):</b> Applies a non-linear Radial Basis Function kernel to project text representations into an infinite-dimensional space to test non-linear separation.</li>
+    <li><b>Extreme Gradient Boosting (XGBoost):</b> An ensemble of gradient-boosted decision trees configured with 200 estimators, learning rate of 0.1, maximum depth of 6, and multiclass log-loss optimization.</li>
+  </ul>
+
+  <h1>5. Experimental Results & Discussion</h1>
+
+  <h2>5.1 Quantitative Performance Comparison</h2>
+  <p>
+    Table 1 outlines the empirical performance achieved across all five classifiers on the identical held-out test split:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align:left;">Model</th>
+        <th>Accuracy (%)</th>
+        <th>Precision (%)</th>
+        <th>Recall (%)</th>
+        <th>F1 Score (%)</th>
+        <th>Time (s)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bold">Logistic Regression</td>
+        <td class="num bold">77.95</td>
+        <td class="num bold">78.47</td>
+        <td class="num bold">77.95</td>
+        <td class="num bold">77.62</td>
+        <td class="num">42.78</td>
+      </tr>
+      <tr>
+        <td>Linear SVM</td>
+        <td class="num">77.71</td>
+        <td class="num">77.67</td>
+        <td class="num">77.71</td>
+        <td class="num">77.53</td>
+        <td class="num">14.08</td>
+      </tr>
+      <tr>
+        <td>SVM RBF</td>
+        <td class="num">74.41</td>
+        <td class="num">75.79</td>
+        <td class="num">74.41</td>
+        <td class="num">73.90</td>
+        <td class="num">289.11</td>
+      </tr>
+      <tr>
+        <td>Naive Bayes</td>
+        <td class="num">74.12</td>
+        <td class="num">76.31</td>
+        <td class="num">74.12</td>
+        <td class="num">72.78</td>
+        <td class="num">7.15</td>
+      </tr>
+      <tr>
+        <td>XGBoost</td>
+        <td class="num">71.31</td>
+        <td class="num">73.29</td>
+        <td class="num">71.31</td>
+        <td class="num">71.23</td>
+        <td class="num">78.27</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-caption">Table 1: Performance metrics across five evaluated machine learning models.</div>
+
+  <h2>5.2 Discussion & Comparative Insights</h2>
+  <p>
+    Multinomial Logistic Regression achieved the highest classification efficacy, leading in Accuracy (77.95%), Precision (78.47%), and F1-score (77.62%). Linear SVC delivered competitive performance (77.53% F1-score) while requiring only 14.08 seconds to train—a 300% speedup over Logistic Regression. Both linear classifiers outperformed the non-linear SVM RBF (73.90% F1, 289.11s). In 20,000-dimensional sparse text vectors, data points are already largely linearly separable; applying kernel transformations introduces excessive smoothing without accuracy gains.
+  </p>
+  <p>
+    XGBoost yielded the lowest F1-score (71.23%) among all models. Tree ensembles struggle on sparse bag-of-words spaces because individual orthogonal axis splits cannot easily capture dispersed linear combinations of vocabulary tokens. Multinomial Naive Bayes trained in just 7.15 seconds, proving its worth for rapid real-time categorization pipelines.
+  </p>
+  <p>
+    Confusion matrix analysis showed that the primary source of classification error occurred between POLITICS and WORLD NEWS due to shared diplomatic and legislative vocabulary. Minor confusion occurred between PARENTING and HEALTH & WELLNESS regarding pediatric care. Domains with distinct vocabularies, such as FOOD & DRINK and TRAVEL, achieved precision exceeding 88%.
+  </p>
+
+  <h2>5.3 Production Web Deployment</h2>
+  <p>
+    The champion Logistic Regression pipeline was integrated into an interactive Streamlit frontend (app.py) equipped with: (1) Live article prediction with calibrated confidence scores and close-call detection; (2) Explainable token attribution highlighting the top TF-IDF n-grams influencing each prediction; (3) Batch CSV classification with exportable outputs; and (4) Interactive model comparison charts and confusion matrix viewers.
+  </p>
+
+  <h1>6. Conclusion & Future Work</h1>
+
+  <h2>6.1 Conclusion</h2>
+  <p>
+    This project successfully developed an end-to-end NLP news classification framework. By coupling linguistic normalization and sublinear TF-IDF n-gram vectorization with regularized linear modeling, Multinomial Logistic Regression achieved an outstanding 77.95% accuracy and 77.62% F1-score across ten news sections, while Linear SVC demonstrated remarkable training speed. The accompanying Streamlit web interface provides intuitive editorial deployment.
+  </p>
+
+  <h2>6.2 Future Work</h2>
+  <p>
+    Future iterations will explore fine-tuning transformer models (e.g., RoBERTa or DeBERTa) to capture deep contextual syntax, implementing multi-label categorization to support hybrid beats (e.g., political finance), and extending coverage to multilingual international publications.
+  </p>
+
+</div>
+
+</body>
+</html>
