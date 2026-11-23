@@ -1,23 +1,23 @@
-# 🗞️ Story Sorter — Multiclass News Article Classification Using NLP
+# Story Sorter — Multiclass News Article Classification Using NLP
 
 An end-to-end Natural Language Processing (NLP) and Machine Learning system that automatically categorizes news articles and headlines into ten editorial desks. The project features a comparative benchmark of five supervised learning models trained on over 200,000 publications from the HuffPost news corpus, coupled with an editorial dark-themed interactive **Streamlit web application** (`app.py`) for live classification, batch prediction, and model interpretability.
 
 ---
 
-## 🌟 Key Highlights & Features
+## Key Highlights & Features
 
 - **High-Performance Models**: Champion **Multinomial Logistic Regression** model achieving **77.95% Accuracy** and **77.62% Weighted F1-Score**, with **Linear SVM** offering an ultra-fast **14-second** training alternative.
 - **Top 10 Editorial Desks**: Categorizes stories into *Politics, Health & Wellness, Entertainment, Travel, Style & Beauty, Parenting, Queer Voices, Food & Drink, Business, and World News*.
 - **Sublinear TF-IDF Feature Extraction**: Unigrams and bigrams (`ngram_range=(1, 2)`) across a 20,000-dimensional vocabulary with sublinear term-frequency scaling.
 - **Editorial Dark Web App (`app.py`)**:
-  - **📰 Live Classifier**: Real-time headline and body prediction, animated confidence ring gauge, probability distribution across all 10 desks, **close-call detection** (alerting when top 2 categories are within 8%), **feature attribution tokens** (`+weight`), and **in-text evidence highlighting** (`<mark>`).
-  - **📂 Batch CSV Prediction**: Bulk file processing with multi-column text merging, persistent state, interactive **Altair category distribution charts**, preview table with progress-bar confidence columns, category filters, and 1-click export of predictions.
-  - **📊 Model Benchmarks**: Champion KPI cards, interactive leaderboard with progress columns, grouped Altair comparison charts, and an interactive viewer for all model confusion matrices.
-  - **ℹ️ Methodology & Taxonomy**: Step-by-step pipeline cards (*Clean $\rightarrow$ Vectorize $\rightarrow$ Classify*), color-coded desk taxonomy guide, and usage limitations.
+  - **Live Classifier**: Real-time headline and body prediction, animated confidence ring gauge, probability distribution across all 10 desks, **close-call detection** (alerting when top 2 categories are within 8%), **feature attribution tokens** (`+weight`), and **in-text evidence highlighting** (`<mark>`).
+  - **Batch CSV Prediction**: Bulk file processing with multi-column text merging, persistent state, interactive **Altair category distribution charts**, preview table with progress-bar confidence columns, category filters, and 1-click export of predictions.
+  - **Model Benchmarks**: Champion KPI cards, interactive leaderboard with progress columns, grouped Altair comparison charts, and an interactive viewer for all model confusion matrices.
+  - **Methodology & Taxonomy**: Step-by-step pipeline cards (*Clean $\rightarrow$ Vectorize $\rightarrow$ Classify*), color-coded desk taxonomy guide, and usage limitations.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 Raw News Text (Headline + Short Description)
@@ -50,13 +50,13 @@ Raw News Text (Headline + Short Description)
 
 ---
 
-## 📊 Experimental Results & Benchmark
+## Experimental Results & Benchmark
 
 All five supervised machine learning models were trained on the identical 80% stratified training partition and evaluated against the 20% held-out test split:
 
 | Model Architecture | Accuracy (%) | Precision (%) | Recall (%) | F1 Score (%) | Training Time (s) | Status |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Logistic Regression** | **77.95** | **78.47** | **77.95** | **77.62** | 42.78 | 🏆 **Champion** |
+| **Logistic Regression** | **77.95** | **78.47** | **77.95** | **77.62** | 42.78 | **Champion** |
 | **Linear SVM** | 77.71 | 77.67 | 77.71 | 77.53 | **14.08** | ⚡ **Fastest Linear** |
 | **SVM RBF** | 74.41 | 75.79 | 74.41 | 73.90 | 289.11 | Non-linear Kernel |
 | **Multinomial Naive Bayes** | 74.12 | 76.31 | 74.12 | 72.78 | **7.15** | Ultra-Fast Baseline |
@@ -69,7 +69,7 @@ All five supervised machine learning models were trained on the identical 80% st
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 NewsArticleClassification/
@@ -97,7 +97,7 @@ NewsArticleClassification/
 
 ---
 
-## 💻 How to Run
+## How to Run
 
 ### 1. Environment Setup & Installation
 Clone the repository and install the required dependencies:
@@ -143,7 +143,7 @@ Open your browser at `http://localhost:8501` to access:
 
 ---
 
-## 🏷️ Category Taxonomy (Top 10 Desks)
+## Category Taxonomy (Top 10 Desks)
 
 - 💼 **Business**: Markets, finance, economy, corporate earnings, and trade.
 - 🎬 **Entertainment**: Cinema, television, music, celebrities, and pop culture.
@@ -158,7 +158,7 @@ Open your browser at `http://localhost:8501` to access:
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Python 3.13**
 - **Scikit-learn**: TF-IDF Vectorization, Logistic Regression, Linear SVC, SVC (RBF), Multinomial Naive Bayes, LabelEncoder, Pipeline.
