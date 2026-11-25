@@ -24,15 +24,40 @@ def clean_text(text: str) -> str:
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 
-def load_and_prepare_data(dataset_path: str):
-    print(f"{Fore.CYAN}{Style.BRIGHT}[INFO] Checking and loading dataset from '{dataset_path}'...")
-    if not Path(dataset_path).exitsts():
+def load_and_prepare_data(dataset_path):
+    path = Path(dataset_path)
+
+    # 1. If path doesn't exist as given, try resolving relative to base directories
+    if not path.exists():
+        base_dir = Path(__file__).resolve().parent
+        if (base_dir / path).exists():
+            path = base_dir / path
+        elif (base_dir.parent / path).exists():
+            path = base_dir.parent / path
+
+    # 2. If path is a directory, look for News.csv or the first .csv inside it
+    if path.is_dir():
+        news_file = path / "News.csv"
+        if news_file.exists():
+            path = news_file
+        else:
+            csv_candidates = list(path.glob("*.csv")) + list(path.glob("*.CSV"))
+            if csv_candidates:
+                path = csv_candidates[0]
+            else:
+                raise FileNotFoundError(
+                    f"{Fore.RED}No CSV dataset found inside directory '{dataset_path}'.\n"
+                    "Place News.csv inside the dataset folder."
+                )
+
+    if not path.exists() or not path.is_file():
         raise FileNotFoundError(
-            f"{Fore.RED}Dataset not found: {dataset_path}\n"
+            f"{Fore.RED}Dataset file not found at '{dataset_path}'.\n"
             "Place News.csv inside the dataset folder."
         )
 
-    df = pd.read_csv(dataset_path, low_memory=False)
+    print(f"{Fore.CYAN}{Style.BRIGHT}[INFO] Checking and loading dataset from '{path}'...")
+    df = pd.read_csv(path, low_memory=False)
     df.columns = df.columns.astype(str).str.strip()
 
     print(f"\n{Fore.BLUE}{Style.BRIGHT}========== DATASET INFORMATION ==========")

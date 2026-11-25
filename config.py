@@ -1,7 +1,9 @@
 from pathlib import Path
 
-DATASET_PATH = "NewsArticleClassification/dataset"
-RESULTS_DIR = "results"
+BASE_DIR = Path(__file__).resolve().parent
+DATASET_DIR = BASE_DIR / "dataset"
+DATASET_PATH = DATASET_DIR / "News.csv"
+RESULTS_DIR = BASE_DIR / "results"
 RANDOM_STATE = 42
 TEST_SIZE_RATIO = 0.20
 TOP_N_CATEGORIES = 10
@@ -41,4 +43,5 @@ TFIDF_PARAMS = {
 }
 
 def ensure_directories():
-    Path(RESULTS_DIR).mkdir(parents=True, exist_ok=True)
+    DATASET_DIR.mkdir(parents=True, exist_ok=True)
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)

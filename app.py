@@ -165,37 +165,37 @@ button[data-testid="stBaseButton-secondary"]:hover, button[data-testid="stBaseBu
 
 # ============================================================ Metadata
 CATEGORY_INFO = {
-    "BUSINESS": {"icon": "💼", "color": "#60A5FA", "desc": "Markets, finance, economy, companies and trade"},
-    "ENTERTAINMENT": {"icon": "🎬", "color": "#A78BFA", "desc": "Cinema, television, music, celebrities and pop culture"},
-    "FOOD & DRINK": {"icon": "🍲", "color": "#FB923C", "desc": "Culinary arts, recipes, restaurants and gastronomy"},
-    "HEALTH & WELLNESS": {"icon": "🌿", "color": "#34D399", "desc": "Medicine, fitness, nutrition and mental health"},
-    "PARENTING": {"icon": "👶", "color": "#F472B6", "desc": "Childcare, family life and parenting advice"},
-    "POLITICS": {"icon": "🏛️", "color": "#F87171", "desc": "Government, elections, legislation and policy"},
+    "BUSINESS": {"icon": "", "color": "#60A5FA", "desc": "Markets, finance, economy, companies and trade"},
+    "ENTERTAINMENT": {"icon": "", "color": "#A78BFA", "desc": "Cinema, television, music, celebrities and pop culture"},
+    "FOOD & DRINK": {"icon": "", "color": "#FB923C", "desc": "Culinary arts, recipes, restaurants and gastronomy"},
+    "HEALTH & WELLNESS": {"icon": "", "color": "#34D399", "desc": "Medicine, fitness, nutrition and mental health"},
+    "PARENTING": {"icon": "", "color": "#F472B6", "desc": "Childcare, family life and parenting advice"},
+    "POLITICS": {"icon": "", "color": "#F87171", "desc": "Government, elections, legislation and policy"},
     "QUEER VOICES": {"icon": "🌈", "color": "#2DD4BF", "desc": "LGBTQ+ community, identity, rights and culture"},
-    "STYLE & BEAUTY": {"icon": "👗", "color": "#FB7185", "desc": "Fashion, design, cosmetics and lifestyle"},
-    "TRAVEL": {"icon": "✈️", "color": "#38BDF8", "desc": "Tourism, destinations, flights, hotels and guides"},
-    "WORLD NEWS": {"icon": "🌐", "color": "#94A3B8", "desc": "International affairs, conflicts and diplomacy"},
+    "STYLE & BEAUTY": {"icon": "", "color": "#FB7185", "desc": "Fashion, design, cosmetics and lifestyle"},
+    "TRAVEL": {"icon": "", "color": "#38BDF8", "desc": "Tourism, destinations, flights, hotels and guides"},
+    "WORLD NEWS": {"icon": "", "color": "#94A3B8", "desc": "International affairs, conflicts and diplomacy"},
 }
-FALLBACK_META = {"icon": "📰", "color": "#94A3B8", "desc": ""}
+FALLBACK_META = {"icon": "", "color": "#94A3B8", "desc": ""}
 
 SAMPLE_ARTICLES = {
-    "🏛️ Politics": ("Senate passes bipartisan funding measure ahead of federal deadline",
+    "Politics": ("Senate passes bipartisan funding measure ahead of federal deadline",
         "Lawmakers in the Senate voted late Thursday to approve a comprehensive bipartisan spending package, sending the bill directly to the president's desk hours before government funding expired."),
-    "💼 Business": ("Wall Street rallies as quarterly corporate earnings exceed analyst expectations",
+    "Business": ("Wall Street rallies as quarterly corporate earnings exceed analyst expectations",
         "Major stock market indices surged in heavy trading following robust quarterly earnings reports from leading technology and financial corporations."),
-    "🎬 Entertainment": ("Director's new sci-fi epic dominates global box office with record debut",
+    "Entertainment": ("Director's new sci-fi epic dominates global box office with record debut",
         "The highly anticipated thriller secured the highest-grossing opening of the year. Critics praised the ensemble cast, visual effects, and original score."),
-    "🍲 Food & Drink": ("A chef's seasonal guide to roasting wild mushrooms with herbs and garlic",
+    "Food & Drink": ("A chef's seasonal guide to roasting wild mushrooms with herbs and garlic",
         "Chanterelles and king oyster mushrooms turn into a caramelized dinner centerpiece, sautéed in clarified butter with rosemary, thyme and lemon zest."),
-    "🌿 Health": ("Daily brisk walking significantly reduces cardiovascular risk, clinical study finds",
+    "Health": ("Daily brisk walking significantly reduces cardiovascular risk, clinical study finds",
         "Just 20 to 30 minutes of moderate aerobic walking per day lowers hypertension and heart disease risk, researchers found."),
-    "✈️ Travel": ("Secret coastal villages in Southern Europe for a tranquil summer holiday",
+    "Travel": ("Secret coastal villages in Southern Europe for a tranquil summer holiday",
         "Far from crowded resorts, secluded Mediterranean harbors offer pebble beaches, family-run tavernas and boutique stays at modest prices."),
-    "👶 Parenting": ("Child psychologists share five bedtime routines that ease toddler sleep anxiety",
+    "Parenting": ("Child psychologists share five bedtime routines that ease toddler sleep anxiety",
         "Predictable nighttime rituals help young children settle: dim screens an hour before bed, keep a warm bath routine, and read together."),
-    "👗 Style": ("Spring runway collections champion vintage tailoring and circular fabrics",
+    "Style": ("Spring runway collections champion vintage tailoring and circular fabrics",
         "Designers unveiled relaxed linen suits, oversized trench coats and zero-waste recycled textiles in warm terracotta and sage tones."),
-    "🌐 World": ("International climate delegation signs landmark marine biodiversity treaty",
+    "World": ("International climate delegation signs landmark marine biodiversity treaty",
         "Envoys from over eighty nations ratified a treaty in Geneva establishing legally binding protections for international ocean corridors."),
 }
 
